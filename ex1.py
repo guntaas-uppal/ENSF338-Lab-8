@@ -4,7 +4,6 @@ class GraphNode:
 
 class Graph:
     def __init__(self):
-        # Initializes an empty adjacency list
         self.adjacency_list = {}
 
     def addNode(self, data):
@@ -38,22 +37,20 @@ class Graph:
                 lines = file.readlines()
                 if not lines[0].strip().startswith('strict graph'):
                     return None
-                self.adjacency_list.clear()  # Clear current graph
+                self.adjacency_list.clear()
                 for line in lines[1:]:
-                    if '--' in line:  # It's an edge definition
+                    if '--' in line:
                         parts = line.split('--')
                         n1_data = parts[0].strip()
                         n2_data, _, attributes = parts[1].partition('[')
                         n2_data = n2_data.strip()
-                        weight = 1  # Default weight
-                        if '[' in line:  # Has attributes
+                        weight = 1
+                        if '[' in line:
                             attributes = attributes.rstrip('];\n').strip()
                             if 'weight=' in attributes:
                                 weight = int(attributes.split('=')[1])
-                        # Ensure nodes exist before adding the edge
                         n1 = self.addNode(n1_data)
                         n2 = self.addNode(n2_data)
-                        # Add edge
                         self.addEdge(n1, n2, weight)
         except Exception as e:
             print(f"Error importing from file: {e}")
@@ -64,13 +61,7 @@ class Graph:
         for node, edges in self.adjacency_list.items():
             print(f"{node}: {edges}")
 
-# Example usage
 if __name__ == "__main__":
     graph = Graph()
-    graph.addNode("node1")
-    graph.addNode("node2")
-    graph.addEdge(GraphNode("node1"), GraphNode("node2"), 5)
-    graph.printGraph()
-
-    graph.importFromFile("your_file_path_here")
+    graph.importFromFile("random.dot")
     graph.printGraph()
